@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import browserAction from './browserAction';
-const futile = require('@fiverr/futile');
+const resolve = require('@fiverr/futile/lib/resolve');
 browserAction();
 
 (() => {
@@ -16,7 +16,7 @@ browserAction();
         const url = details.url;
         if(url.match('/jobs?')) {
             const body = parseRawPostBody(details.requestBody);
-            const query = futile.resolve('configuration.query.query', body);
+            const query = resolve('configuration.query.query', body);
             if(!isQueryValid(query)) {
                 chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
                     chrome.tabs.sendMessage(tabs[0].id, {action: actionTypes.REQUEST_BLOCKED});
